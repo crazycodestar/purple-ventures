@@ -9,6 +9,7 @@ import { OrderDetails } from "./order-details";
 import { OrderSkeleton } from "./order-skeleton";
 import { ordersAPI } from "@/api";
 import { useEffect, useState } from "react";
+import type { GetOrderByReferenceOrSlugResponse } from "@/api/returnTypes";
 
 export function OrderLookup({
   slug,
@@ -19,7 +20,9 @@ export function OrderLookup({
 }) {
   const router = useRouter();
 
-  const [order, setOrder] = useState<any>(null);
+  const [order, setOrder] = useState<GetOrderByReferenceOrSlugResponse | null>(
+    null
+  );
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {

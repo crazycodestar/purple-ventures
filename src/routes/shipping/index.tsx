@@ -35,7 +35,8 @@ type ShipmentRate = {
   delivery_time: string;
   pickup_time: string;
   metadata: {
-    [key: string]: any;
+    recommended?: string | boolean;
+    [key: string]: unknown;
   };
 };
 
@@ -53,7 +54,7 @@ const shippingFormSchema = z.object({
   rateId: z.string().min(1, "Please select a shipping rate"),
   terminalAddressId: z.string().min(1, "Address ID is required"),
   terminalParcelId: z.string().min(1, "Parcel ID is required"),
-  saveAddress: z.boolean().default(false),
+  saveAddress: z.boolean(),
 });
 
 type ShippingFormSchema = z.infer<typeof shippingFormSchema>;
@@ -220,7 +221,19 @@ function RouteComponent() {
       console.error(error);
       return toast.error("Failed to fetch rates");
     }
-    setShipmentRates(data);
+
+    // Convert recommended field to boolean if it's a string
+    const rates = data.map((rate: ShipmentRate) => ({
+      ...rate,
+      metadata: {
+        ...rate.metadata,
+        recommended:
+          rate.metadata.recommended === "true" ||
+          rate.metadata.recommended === true,
+      },
+    }));
+
+    setShipmentRates(rates);
   };
 
   const states = useStates();
@@ -811,9 +824,9 @@ function RouteComponent() {
             </div>
             <div className="flex flex-wrap gap-4 text-sm">
               <span className="text-gray-500">Powered by ESW</span>
-              <Link to="/terms">Terms & Conditions</Link>
-              <Link to="/privacy">Privacy Statement</Link>
-              <Link to="/cookies">Cookie Policy</Link>
+              <Link to="/">Terms & Conditions</Link>
+              <Link to="/">Privacy Statement</Link>
+              <Link to="/">Cookie Policy</Link>
             </div>
           </div>
         </div>

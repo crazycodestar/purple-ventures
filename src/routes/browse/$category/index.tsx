@@ -1,4 +1,7 @@
 import { collectionsAPI } from "@/api";
+import type { GetFiltersResponse } from "@/api/returnTypes";
+import type { GetProductsByCategoryIdAndStoreSlugResponse } from "@/api/returnTypes";
+import type { GetCategoryByIdAndStoreSlugResponse } from "@/api/returnTypes";
 import { Filters, useFilter } from "@/components/filters";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useStoreSlug } from "@/hooks/use-store-slug";
@@ -8,9 +11,8 @@ import { useEffect, useRef, useState } from "react";
 
 export const Route = createFileRoute("/browse/$category/")({
   loader: async ({ params: { category } }) => {
-    const { storeSlug } = useStoreSlug();
     const result = await collectionsAPI.getCategoryByIdAndStoreSlug(
-      storeSlug,
+      "convertly",
       category
     );
     return { category: result };
@@ -22,13 +24,15 @@ function RouteComponent() {
   const { storeSlug } = useStoreSlug();
   const { category: categoryId } = Route.useParams();
 
-  const [properties, setProperties] = useState<any>(null);
-  const [category, setCategory] = useState<any>(null);
-  const [products, setProducts] = useState<any[]>([]);
+  const [properties, setProperties] = useState<GetFiltersResponse | null>(null);
+  const [category, setCategory] =
+    useState<GetCategoryByIdAndStoreSlugResponse | null>(null);
+  const [products, setProducts] =
+    useState<GetProductsByCategoryIdAndStoreSlugResponse>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const { handleTogglePropertyFilter, isChecked, filterByPropertyId } =
-    useFilter(properties);
+    useFilter(properties ?? undefined);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -75,7 +79,7 @@ function RouteComponent() {
           categoryId,
           getProperties()
         );
-        setProducts(data as any[]);
+        setProducts(data);
       } catch (error) {
         console.error("Failed to fetch products:", error);
       }
@@ -108,7 +112,7 @@ function RouteComponent() {
                 <Filters
                   isChecked={isChecked}
                   onTogglePropertyFilter={handleTogglePropertyFilter}
-                  properties={properties}
+                  properties={properties ?? undefined}
                 />
               </div>
 

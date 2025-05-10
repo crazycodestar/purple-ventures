@@ -80,10 +80,10 @@ function RouteComponent() {
           (p) => p[1].length > 0
         );
         if (!shouldCall) return;
-        return filterByPropertyIdEntries?.map(([key, value]) => ({
-          key,
-          value,
-        }));
+        return filterByPropertyIdEntries?.reduce((acc, [key, value]) => {
+          acc[key] = value;
+          return acc;
+        }, {} as Record<string, unknown>);
       };
 
       try {
