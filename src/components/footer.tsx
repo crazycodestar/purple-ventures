@@ -7,7 +7,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
           {/* SUPPORT */}
           <div>
-            <h3 className="uppercase tracking-widest text-xs font-semibold mb-4">
+            <h3 className="uppercase tracking-widest text-xs font-normal mb-4">
               Support
             </h3>
             <ul className="space-y-2 text-sm">
@@ -27,7 +27,7 @@ export function Footer() {
           </div>
           {/* LEARN */}
           <div>
-            <h3 className="uppercase tracking-widest text-xs font-semibold mb-4">
+            <h3 className="uppercase tracking-widest text-xs font-normal mb-4">
               Learn
             </h3>
             <ul className="space-y-2 text-sm">
@@ -41,7 +41,7 @@ export function Footer() {
           </div>
           {/* INFORMATION */}
           <div>
-            <h3 className="uppercase tracking-widest text-xs font-semibold mb-4">
+            <h3 className="uppercase tracking-widest text-xs font-normal mb-4">
               Information
             </h3>
             <ul className="space-y-2 text-sm">

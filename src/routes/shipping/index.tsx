@@ -261,7 +261,7 @@ function RouteComponent() {
           <div className="lg:w-2/3">
             {/* Delivery Address */}
             <div className="bg-white border rounded-md p-6 mb-6">
-              <h2 className="text-lg font-medium">Delivery Address</h2>
+              <h2 className="text-lg font-normal">Delivery Address</h2>
               <p className="text-sm mb-6">
                 Your order total includes product cost and shipping costs.
               </p>
@@ -515,11 +515,11 @@ function RouteComponent() {
                                   className="h-8 w-8 object-contain"
                                 />
                               )}
-                              <h4 className="font-medium">
+                              <h4 className="font-normal">
                                 {selectedRate.carrier_name}
                               </h4>
                             </div>
-                            <div className="font-medium">
+                            <div className="font-normal">
                               {selectedRate.amount.toLocaleString("en-NG", {
                                 style: "currency",
                                 currency: selectedRate.currency,
@@ -561,7 +561,7 @@ function RouteComponent() {
                             <TruckIcon className="h-4 w-4 text-blue-600" />
                           </div>
                           <div>
-                            <p className="font-medium">
+                            <p className="font-normal">
                               Choose Shipping Method
                             </p>
 
@@ -603,11 +603,11 @@ function RouteComponent() {
                                     className="h-8 w-8 object-contain"
                                   />
                                 )}
-                                <h4 className="font-medium">
+                                <h4 className="font-normal">
                                   {rate.carrier_name}
                                 </h4>
                               </div>
-                              <div className="font-medium">
+                              <div className="font-normal">
                                 {rate.amount.toLocaleString("en-NG", {
                                   style: "currency",
                                   currency: rate.currency,
@@ -646,7 +646,7 @@ function RouteComponent() {
                   disabled={
                     isPending || !canGetShipmentRates || isOrderProcessing
                   }
-                  className="flex gap-2 items-center justify-center cursor-pointer w-full bg-black text-white py-3 font-medium mt-4 disabled:opacity-50"
+                  className="flex gap-2 items-center justify-center cursor-pointer w-full bg-black text-white py-3 font-normal mt-4 disabled:opacity-50"
                 >
                   {isOrderProcessing && (
                     <Loader className="size-4 animate-spin" />
@@ -661,7 +661,7 @@ function RouteComponent() {
           <div className="lg:w-1/3">
             <div className="bg-white border rounded-md mb-6 lg:sticky lg:top-4">
               <div className="p-4 bg-gray-100 border-b">
-                <h2 className="text-lg font-medium">Cart Overview</h2>
+                <h2 className="text-lg font-normal">Cart Overview</h2>
               </div>
 
               <div className="p-4">
@@ -713,7 +713,7 @@ function RouteComponent() {
                           />
                         </div>
                         <div className="flex-1">
-                          <h3 className="font-medium text-sm">
+                          <h3 className="font-normal text-sm">
                             {product.name}
                           </h3>
                           <div className="grid grid-cols-2 gap-x-4 gap-y-1 mt-2 text-sm">
@@ -790,7 +790,7 @@ function RouteComponent() {
                     </div>
                   </div>
 
-                  <div className="flex justify-between font-medium pt-2 border-t">
+                  <div className="flex justify-between font-normal pt-2 border-t">
                     <span>Total</span>
                     <span>
                       {isPending ? (

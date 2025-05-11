@@ -77,7 +77,7 @@ const ProductCarousel = ({
   return (
     <section>
       <div className="mb-6">
-        <h3 className="text-2xl font-semibold">{title}</h3>
+        <h3 className="text-2xl font-normal">{title}</h3>
         <p className="text-md text-foreground/80">{description}</p>
       </div>
 
@@ -140,7 +140,7 @@ const ProductCarousel = ({
                         />
                         <div>
                           <h3>{product.name}</h3>
-                          <p className="font-bold">
+                          <p className="font-normal">
                             {product.price.toLocaleString("en-NG", {
                               style: "currency",
                               currency: "NGN",

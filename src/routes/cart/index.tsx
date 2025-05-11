@@ -25,7 +25,7 @@ function RouteComponent() {
           <div className="lg:w-2/3">
             {/* Shopping Bag Header */}
             <div className="mb-4">
-              <h1 className="text-xl font-medium">
+              <h1 className="text-xl font-normal">
                 Shopping Bag ({formattedProducts.length})
               </h1>
               <p className="text-sm text-gray-600">
@@ -76,7 +76,7 @@ function RouteComponent() {
 
                       {/* Product Details */}
                       <div className="md:w-2/4 md:px-4">
-                        <h3 className="font-medium mb-1">{item.name}</h3>
+                        <h3 className="font-normal mb-1">{item.name}</h3>
                         <p className="text-sm mb-2">
                           {item.price.toLocaleString("en-NG", {
                             currency: "NGN",
@@ -149,12 +149,12 @@ function RouteComponent() {
           {/* Order Summary */}
           <div className="lg:w-1/3">
             <div className="bg-white border rounded-md p-4 mb-6 sticky top-4">
-              <h2 className="text-lg font-medium mb-4">Order summary</h2>
+              <h2 className="text-lg font-normal mb-4">Order summary</h2>
 
               <div className="flex items-start mb-4">
                 <Info className="h-5 w-5 text-blue-600 mr-2 shrink-0" />
                 <div className="text-sm">
-                  <p className="font-medium">
+                  <p className="font-normal">
                     Delivery will be processed in the next step
                   </p>
                   <p className="text-gray-600">
@@ -203,7 +203,7 @@ function RouteComponent() {
                 {isPending ? (
                   <Skeleton className="h-6 w-[50px]" />
                 ) : (
-                  <span className="font-medium">
+                  <span className="font-normal">
                     {isEmpty
                       ? (0).toLocaleString("en-NG", {
                           currency: "NGN",
@@ -220,7 +220,7 @@ function RouteComponent() {
               <Button
                 asChild={!isPending && !isEmpty}
                 disabled={isPending || isEmpty}
-                className="rounded-none w-full flex justify-center bg-black text-white py-5 font-medium mb-3"
+                className="rounded-none w-full flex justify-center bg-black text-white py-5 font-normal mb-3"
               >
                 <Link to="/shipping">Checkout</Link>
               </Button>

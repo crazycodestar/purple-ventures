@@ -208,10 +208,10 @@ const MyProducts = () => {
             )}
           </div>
           <div className="flex flex-col">
-            <p className="text-sm font-extralight uppercase tracking-wider">
+            <p className="text-sm font-light uppercase tracking-wider">
               {product.name}
             </p>
-            <p className="text-lg font-medium">${product.price}</p>
+            <p className="font-extralight text-sm">${product.price}</p>
           </div>
         </Link>
       ))}

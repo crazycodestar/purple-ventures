@@ -183,7 +183,7 @@ function SplitCarousel({
                 contentContainerClassName
               )}
             >
-              <h2 className="text-3xl font-bold">{slide.title}</h2>
+              <h2 className="text-3xl font-normal">{slide.title}</h2>
               <p className="text-lg">{slide.description}</p>
               <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3 pt-2">
                 <Button asChild variant="link" className="px-0">

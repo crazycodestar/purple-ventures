@@ -100,7 +100,7 @@ function RouteComponent() {
           {isPending ? (
             <Skeleton className="w-[200px] h-9" />
           ) : (
-            <h1 className="text-2xl font-medium">{category?.name}</h1>
+            <h1 className="text-2xl font-normal">{category?.name}</h1>
           )}
         </div>
 
@@ -164,7 +164,7 @@ function RouteComponent() {
                         />
                         <div>
                           <h3>{product.name}</h3>
-                          <p className="font-bold">
+                          <p className="font-normal">
                             {product.price.toLocaleString("en-NG", {
                               style: "currency",
                               currency: "NGN",

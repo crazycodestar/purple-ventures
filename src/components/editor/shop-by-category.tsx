@@ -15,7 +15,9 @@ export const ShopByCategory = ({ categories }: GalleryProps) => {
   return (
     <section className="pt-10 border-t-2 border-black">
       <div className="flex flex-col items-center mb-12">
-        <h3 className="text-2xl font-bold text-center uppercase">Categories</h3>
+        <h3 className="text-2xl font-normal text-center uppercase">
+          Categories
+        </h3>
         <p className="text-md text-center text-foreground/80">
           Shop from the categories we offer
         </p>
@@ -35,7 +37,7 @@ export const ShopByCategory = ({ categories }: GalleryProps) => {
                 to="/browse/$category"
                 params={{ category: category.categoryId }}
               >
-                <h3 className="text-center text-lg font-semibold mt-2">
+                <h3 className="text-center text-lg font-normal mt-2">
                   {category.title}
                 </h3>
               </Link>

@@ -117,7 +117,7 @@ export function ImageUploader<T extends FieldValues>({
             <input {...getInputProps()} />
             <div className="flex flex-col items-center justify-center gap-1 text-center">
               <Upload className="size-4 text-muted-foreground" />
-              <p className="text-sm font-medium">
+              <p className="text-sm font-normal">
                 {isDragActive
                   ? "Drop the image here"
                   : "Drag & drop an image here"}

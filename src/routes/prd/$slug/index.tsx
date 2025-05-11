@@ -42,7 +42,7 @@ function RouteComponent() {
             <div className="sticky top-28">
               <div>
                 {/* <h1 className="text-sm text-gray-500 mb-1">KOMAROV</h1> */}
-                <h2 className="text-xl font-medium">{product!.name}</h2>
+                <h2 className="text-xl font-normal">{product!.name}</h2>
               </div>
               <OrderLayout
                 product={{

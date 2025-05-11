@@ -29,7 +29,7 @@ export function OrderDetails({ order }: OrderDetailsProps) {
           {/* <OrderTracker status={order.status} /> */}
 
           <div>
-            <h3 className="font-semibold mb-2">Customer Information</h3>
+            <h3 className="font-normal mb-2">Customer Information</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
               <div>
                 <span className="text-muted-foreground">Email:</span>{" "}
@@ -43,7 +43,7 @@ export function OrderDetails({ order }: OrderDetailsProps) {
           </div>
 
           <div>
-            <h3 className="font-semibold mb-2">Shipping Information</h3>
+            <h3 className="font-normal mb-2">Shipping Information</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
               <div>
                 <span className="text-muted-foreground">Name:</span>{" "}
@@ -68,13 +68,13 @@ export function OrderDetails({ order }: OrderDetailsProps) {
           </div>
 
           <div>
-            <h3 className="font-semibold mb-2">Order Items</h3>
+            <h3 className="font-normal mb-2">Order Items</h3>
             <div className="space-y-4">
               {order.items.map((item, index) => (
                 <div key={index} className="border rounded-md p-3">
                   <div className="flex justify-between mb-2">
-                    <div className="font-medium">{item.name}</div>
-                    <div className="font-medium">
+                    <div className="font-normal">{item.name}</div>
+                    <div className="font-normal">
                       {formatCurrency(item.price * item.quantity)}
                     </div>
                   </div>
@@ -124,7 +124,7 @@ export function OrderDetails({ order }: OrderDetailsProps) {
               <span>{formatCurrency(order.deliveryAmount)}</span>
             </div>
             <Separator className="my-2" />
-            <div className="flex justify-between font-medium">
+            <div className="flex justify-between font-normal">
               <span>Total</span>
               <span>{formatCurrency(order.amount + order.deliveryAmount)}</span>
             </div>

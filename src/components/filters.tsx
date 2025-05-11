@@ -212,7 +212,7 @@ export const Filters = ({
                   checked={isChecked(_id, name)}
                   onClick={() => onTogglePropertyFilter(_id, name)}
                 />
-                <p className="py-1 whitespace-nowrap font-medium">{name}</p>
+                <p className="py-1 whitespace-nowrap font-normal">{name}</p>
               </div>
             ))}
           </AccordionContent>
