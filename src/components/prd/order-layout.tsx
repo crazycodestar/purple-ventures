@@ -92,7 +92,7 @@ export default function OrderLayout({
     <OrderProvider value={{ form, onSubmit }}>
       <div className="mb-4">
         <div className="flex items-center gap-2">
-          <span className="font-normal text-primary-50">
+          <span className="font-normal text-muted-foreground">
             {total.toLocaleString("en-NG", {
               style: "currency",
               currency: "NGN",
@@ -106,7 +106,7 @@ export default function OrderLayout({
       <div className="mb-6 mt-4">
         <button
           disabled={isSubmitting}
-          className="w-full cursor-pointer bg-black text-white py-3 font-normal mb-2"
+          className="w-full cursor-pointer bg-primary text-primary-foreground py-3 font-normal mb-2"
         >
           {isSubmitting ? (
             <span className="w-full flex justify-center">

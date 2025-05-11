@@ -2,7 +2,7 @@ import { Skeleton } from "../ui/skeleton";
 
 export const EditorLoading = () => {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-background">
       {/* Hero Banner */}
       <div className="relative">
         <Skeleton className="h-[400px] w-full" />
@@ -122,7 +122,7 @@ export const EditorLoading = () => {
       </div>
 
       {/* Footer */}
-      <footer className="mt-12 border-t border-gray-200 py-8">
+      <footer className="mt-12 border-t border-border py-8">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 gap-8 md:grid-cols-4 lg:grid-cols-5">
             {Array.from({ length: 5 }).map((_, i) => (

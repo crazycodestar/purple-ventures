@@ -30,9 +30,9 @@ export function Nav() {
       } top-0 w-full z-50 transition-colors duration-200 ${
         isRootRoute
           ? isScrolled
-            ? "bg-white text-black"
-            : "bg-transparent text-white"
-          : "bg-white text-black"
+            ? "bg-background text-foreground"
+            : "bg-transparent text-background"
+          : "bg-background text-foreground"
       }`}
     >
       <nav className="container mx-auto px-4 md:px-8 py-2">
@@ -54,8 +54,10 @@ export function Nav() {
               to="/order"
               aria-label="Order Lookup"
             >
-              <Package className="size-5 sm:size-4 text-black" />
-              <span className="hidden sm:inline text-black">Track Order</span>
+              <Package className="size-5 sm:size-4 text-foreground" />
+              <span className="hidden sm:inline text-foreground">
+                Track Order
+              </span>
             </Link>
             <Link to="/cart" aria-label="Shopping Bag">
               <ShoppingBag className="h-5 w-5" />

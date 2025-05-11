@@ -166,7 +166,7 @@ const ProductCarousel = ({
                 carouselApi?.scrollPrev();
               }}
               disabled={!canScrollPrev}
-              className="disabled:pointer-events-auto md:flex absolute h-full top-0 rounded-none hover:bg-black/50"
+              className="disabled:pointer-events-auto md:flex absolute h-full top-0 rounded-none hover:bg-accent/50"
             >
               <ChevronLeft className="size-5" />
             </Button>
@@ -178,7 +178,7 @@ const ProductCarousel = ({
                 carouselApi?.scrollNext();
               }}
               disabled={!canScrollNext}
-              className="disabled:pointer-events-auto md:flex absolute h-full top-0 rounded-none hover:bg-black/50 right-0"
+              className="disabled:pointer-events-auto md:flex absolute h-full top-0 rounded-none hover:bg-accent/50 right-0"
             >
               <ChevronRight className="size-5" />
             </Button>

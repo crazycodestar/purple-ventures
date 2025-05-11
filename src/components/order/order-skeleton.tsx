@@ -53,7 +53,7 @@ export function OrderSkeleton() {
             <Skeleton className="h-6 w-48 mb-2" />
             <div className="space-y-4">
               {[1, 2].map((item) => (
-                <div key={item} className="border rounded-md p-3">
+                <div key={item} className="border border-border rounded-md p-3">
                   <div className="flex justify-between mb-2">
                     <Skeleton className="h-5 w-40" />
                     <Skeleton className="h-5 w-20" />

@@ -81,7 +81,7 @@ export const TipTapContent = ({ content }: { content: string }) => {
 
 export const Tiptap = ({ children }: React.PropsWithChildren) => {
   return (
-    <div className="border rounded-md">
+    <div className="border border-border rounded-md">
       <EditorProvider
         extensions={extensions}
         editorContainerProps={{ className: "p-4 editor-container" }}

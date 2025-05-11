@@ -68,7 +68,7 @@ export function Footer() {
               Subscribe to get special offers, free giveaways, and
               once-in-a-lifetime deals.
             </p>
-            <div className="flex items-center border-b border-black max-w-xs">
+            <div className="flex items-center border-b border-border max-w-xs">
               <input
                 type="email"
                 placeholder="Enter your email"
@@ -96,19 +96,33 @@ export function Footer() {
           <div className="flex gap-4 mt-4 md:mt-0">
             <a href="https://instagram.com" aria-label="Instagram">
               <svg width="32" height="32" fill="none" viewBox="0 0 32 32">
-                <rect width="32" height="32" rx="8" fill="#222" />
+                <rect
+                  width="32"
+                  height="32"
+                  rx="8"
+                  fill="currentColor"
+                  className="text-foreground"
+                />
                 <path
                   d="M21.333 10.667a2.667 2.667 0 0 1 2.667 2.666v6.334a2.667 2.667 0 0 1-2.667 2.666h-6.666a2.667 2.667 0 0 1-2.667-2.666v-6.334a2.667 2.667 0 0 1 2.667-2.666h6.666Zm-3.333 2.666a2.667 2.667 0 1 0 0 5.334 2.667 2.667 0 0 0 0-5.334Zm4 0a.667.667 0 1 0 0 1.334.667.667 0 0 0 0-1.334Zm-4 1.334a1.333 1.333 0 1 1 0 2.666 1.333 1.333 0 0 1 0-2.666Z"
-                  fill="#fff"
+                  fill="currentColor"
+                  className="text-background"
                 />
               </svg>
             </a>
             <a href="https://facebook.com" aria-label="Facebook">
               <svg width="32" height="32" fill="none" viewBox="0 0 32 32">
-                <rect width="32" height="32" rx="8" fill="#222" />
+                <rect
+                  width="32"
+                  height="32"
+                  rx="8"
+                  fill="currentColor"
+                  className="text-foreground"
+                />
                 <path
                   d="M18.667 16h-1.334v6h-2.666v-6h-1.334v-2h1.334v-1.333c0-1.104.896-2 2-2h1.333v2h-1.333v1.333h1.333v2Z"
-                  fill="#fff"
+                  fill="currentColor"
+                  className="text-background"
                 />
               </svg>
             </a>
@@ -130,7 +144,7 @@ export function Footer() {
         </div>
 
         {/* Copyright */}
-        <div className="text-center text-xs text-[#222]">
+        <div className="text-center text-xs text-muted-foreground">
           <div className="mb-1">© 2025 MUSICBOX LTD</div>
           <div>Powered by Shopify</div>
         </div>

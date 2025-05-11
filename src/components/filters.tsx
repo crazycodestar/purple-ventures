@@ -163,28 +163,17 @@ export const Filters = ({
 
   if (isPending) {
     return (
-      <Accordion className="border-t border-b" type="single" collapsible>
-        {/* <AccordionItem value="price-filter">
-          <AccordionTrigger className="text-base hover:no-underline cursor-pointer py-4 rounded-none">
-            <Skeleton className="h-4 w-16 rounded" />
-          </AccordionTrigger>
-          <AccordionContent className="py-2 border-t">
-            <div className="flex items-center gap-3 mt-2">
-              <Skeleton className="h-8 w-full rounded" />
-              <span>-</span>
-              <Skeleton className="h-8 w-full rounded" />
-            </div>
-            <div className="flex justify-end mt-2">
-              <Skeleton className="h-8 w-16 rounded" />
-            </div>
-          </AccordionContent>
-        </AccordionItem> */}
+      <Accordion
+        className="border-t border-b border-border"
+        type="single"
+        collapsible
+      >
         {[1, 2, 3].map((i) => (
           <AccordionItem value={`skeleton-${i}`} key={i}>
             <AccordionTrigger className="text-base hover:no-underline cursor-pointer py-4 rounded-none">
               <Skeleton className="h-4 w-24 rounded" />
             </AccordionTrigger>
-            <AccordionContent className="py-2 border-t">
+            <AccordionContent className="py-2 border-t border-border">
               {[1, 2, 3].map((j) => (
                 <div key={j} className="flex gap-3 items-center py-1">
                   <Skeleton className="h-4 w-4 rounded" />
@@ -199,13 +188,17 @@ export const Filters = ({
   }
 
   return (
-    <Accordion className="border-t border-b" type="single" collapsible>
+    <Accordion
+      className="border-t border-b border-border"
+      type="single"
+      collapsible
+    >
       {properties?.map(({ name, _id, options }) => (
         <AccordionItem value={`${name}-filter`} key={_id}>
           <AccordionTrigger className="text-base hover:no-underline cursor-pointer py-4 rounded-none">
             {name}
           </AccordionTrigger>
-          <AccordionContent className="py-2 border-t">
+          <AccordionContent className="py-2 border-t border-border">
             {options?.map((name, index) => (
               <div key={index} className="flex gap-3 items-center py-1">
                 <Checkbox
