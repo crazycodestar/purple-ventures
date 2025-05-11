@@ -13,6 +13,7 @@ import {
   getProductsByCategoryIdAndStoreSlugResponseSchema,
   getProductsByCollectionSlugAndStoreSlugResponseSchema,
   getProductsByIdsResponseSchema,
+  getProductsByStoreSlugResponseSchema,
   getRatesResponseSchema,
   getStatesResponseSchema,
   getSubCategoriesByParentIdAndStoreSlugResponseSchema,
@@ -127,6 +128,12 @@ export const productsAPI = {
     fetchAPI(API_ENDPOINTS.products.getProductsByIds, {
       params: { ids: ids.join(",") },
     }).then((data) => getProductsByIdsResponseSchema.parse(data)),
+
+  getProductsByStoreSlug: (storeSlug: string) =>
+    fetchAPI(API_ENDPOINTS.products.getProductsByStoreSlug, {
+      params: { storeSlug },
+      // }).then((data) => console.log(data)),
+    }).then((data) => getProductsByStoreSlugResponseSchema.parse(data)),
 };
 
 type ShippingForm = {

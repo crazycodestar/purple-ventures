@@ -1,113 +1,49 @@
 "use client";
 
-import { collectionsAPI } from "@/api";
-import { Button } from "@/components/ui/button";
-import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-import { Skeleton } from "@/components/ui/skeleton";
 import useCartStore from "@/hooks/use-cart-store";
-import { useStoreSlug } from "@/hooks/use-store-slug";
-import { cn } from "@/lib/utils";
-import { Menu, Package, Plus, ShoppingBag } from "lucide-react";
-import { Link } from "@tanstack/react-router";
-import React from "react";
-
-type Category = {
-  _id: string;
-  name: string;
-};
+import { Link, useRouter } from "@tanstack/react-router";
+import { Package, ShoppingBag } from "lucide-react";
+import { useEffect, useState } from "react";
 
 export function Nav() {
-  const [activeId, setActiveId] = React.useState<string | null>(null);
   const items = useCartStore((state) => state.items);
-  const { storeSlug } = useStoreSlug();
-  const [categories, setCategories] = React.useState<Category[]>([]);
-  const [isLoading, setIsLoading] = React.useState(true);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const router = useRouter();
+  const isRootRoute = router.state.location.pathname === "/";
 
-  React.useEffect(() => {
-    const fetchCategories = async () => {
-      if (!storeSlug) return;
+  useEffect(() => {
+    if (!isRootRoute) return;
 
-      try {
-        const data = await collectionsAPI.getCategoriesByStoreSlug(storeSlug);
-        setCategories(data);
-      } catch (error) {
-        console.error("Failed to fetch categories:", error);
-      } finally {
-        setIsLoading(false);
-      }
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY;
+      setIsScrolled(scrollPosition > 0);
     };
 
-    fetchCategories();
-  }, [storeSlug]);
-
-  const isPending = isLoading;
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [isRootRoute]);
 
   return (
-    <header>
-      <div className="mx-4 md:mx-8 py-2">
-        <div className="flex items-center justify-between py-6 border-b">
+    <header
+      className={`${
+        isRootRoute ? "fixed" : "sticky"
+      } top-0 w-full z-50 transition-colors duration-200 ${
+        isRootRoute
+          ? isScrolled
+            ? "bg-white text-black"
+            : "bg-transparent text-white"
+          : "bg-white text-black"
+      }`}
+    >
+      <nav className="container mx-auto px-4 md:px-8 py-2">
+        <div className="flex items-center justify-between py-6">
           {/* Logo */}
           <div className="flex gap-2">
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button size="icon" variant="ghost" className="md:hidden">
-                  <Menu className="size-4" />
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="left" className="w-full md:hidden">
-                <SheetHeader className="flex items-center justify-between">
-                  <SheetTitle>
-                    <Link to="/" className="font-medium text-xl">
-                      PURPLEVENTURES
-                    </Link>
-                  </SheetTitle>
-                  <SheetDescription>Purpleventures</SheetDescription>
-                </SheetHeader>
-                <div>
-                  {categories?.slice(0, 8).map(({ name, _id }, index) => (
-                    <div key={index} className="flex flex-col">
-                      <div className="flex items-center justify-between px-3 py-1">
-                        <SheetClose key={index} asChild>
-                          <Link
-                            to={`/browse/$category`}
-                            params={{
-                              category: _id,
-                            }}
-                            className={cn(
-                              "px-3 py-1 whitespace-nowrap font-medium",
-                              !index && "text-red-500"
-                            )}
-                          >
-                            {name}
-                          </Link>
-                        </SheetClose>
-                        <Button
-                          onClick={() => setActiveId(_id)}
-                          variant="ghost"
-                          size="icon"
-                        >
-                          <Plus className="size-4" />
-                        </Button>
-                      </div>
-                      {activeId === _id && (
-                        <SubCategoryMenuMobile parentId={_id} />
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </SheetContent>
-            </Sheet>
-
-            <Link to="/" className="font-medium text-3xl">
-              PURPLEVENTURES
+            <Link
+              to="/"
+              className="font-light text-xl uppercase tracking-wider"
+            >
+              Musicbox.ng
             </Link>
           </div>
 
@@ -118,8 +54,8 @@ export function Nav() {
               to="/order"
               aria-label="Order Lookup"
             >
-              <Package className="size-5 sm:size-4" />
-              <span className="hidden sm:inline">Track Order</span>
+              <Package className="size-5 sm:size-4 text-black" />
+              <span className="hidden sm:inline text-black">Track Order</span>
             </Link>
             <Link to="/cart" aria-label="Shopping Bag">
               <ShoppingBag className="h-5 w-5" />
@@ -131,129 +67,7 @@ export function Nav() {
             </Link>
           </div>
         </div>
-
-        {/* Main Navigation */}
-        <nav className="hidden md:flex items-center justify-around text-sm py-5 px-8">
-          {isPending && (
-            <>
-              {Array.from({ length: 8 }).map((_, i) => (
-                <Skeleton key={i} className="h-4 w-16" />
-              ))}
-            </>
-          )}
-
-          {categories?.slice(0, 8).map(({ name, _id }, index) => (
-            <div
-              key={index}
-              className="relative"
-              onMouseEnter={() => setActiveId(_id)}
-              onMouseLeave={() => setActiveId(null)}
-            >
-              <Link
-                to={`/browse/$category`}
-                params={{
-                  category: _id,
-                }}
-                className={cn(
-                  "px-3 py-1 whitespace-nowrap font-medium hover:underline",
-                  !index && "text-red-500"
-                )}
-              >
-                {name}
-              </Link>
-              {/* Subcategory Menu */}
-              {activeId === _id && (
-                <div className="absolute top-full left-0 bg-white shadow-lg rounded-md py-2 min-w-[200px] z-50">
-                  <SubCategoryMenu parentId={_id} />
-                </div>
-              )}
-            </div>
-          ))}
-        </nav>
-      </div>
+      </nav>
     </header>
   );
 }
-
-const SubCategoryMenu = ({ parentId }: { parentId: string }) => {
-  const { storeSlug } = useStoreSlug();
-  const [subCategories, setSubCategories] = React.useState<Category[]>([]);
-
-  React.useEffect(() => {
-    const fetchSubCategories = async () => {
-      if (!storeSlug) return;
-
-      try {
-        const data =
-          await collectionsAPI.getSubCategoriesByParentIdAndStoreSlug(
-            storeSlug,
-            parentId
-          );
-        setSubCategories(data as Category[]);
-      } catch (error) {
-        console.error("Failed to fetch subcategories:", error);
-      }
-    };
-
-    fetchSubCategories();
-  }, [storeSlug, parentId]);
-
-  return (
-    <div className="flex flex-col gap-2 px-1">
-      {subCategories?.map(({ name, _id }, index) => (
-        <Link
-          key={index}
-          to={`/browse/$category`}
-          params={{
-            category: _id,
-          }}
-          className="px-3 py-1 hover:bg-muted transition-colors"
-        >
-          {name}
-        </Link>
-      ))}
-    </div>
-  );
-};
-
-const SubCategoryMenuMobile = ({ parentId }: { parentId: string }) => {
-  const { storeSlug } = useStoreSlug();
-  const [subCategories, setSubCategories] = React.useState<Category[]>([]);
-
-  React.useEffect(() => {
-    const fetchSubCategories = async () => {
-      if (!storeSlug) return;
-
-      try {
-        const data =
-          await collectionsAPI.getSubCategoriesByParentIdAndStoreSlug(
-            storeSlug,
-            parentId
-          );
-        setSubCategories(data as Category[]);
-      } catch (error) {
-        console.error("Failed to fetch subcategories:", error);
-      }
-    };
-
-    fetchSubCategories();
-  }, [storeSlug, parentId]);
-
-  return (
-    <div className="flex flex-col gap-4 pl-8">
-      {subCategories?.map(({ name, _id }, index) => (
-        <SheetClose key={index} asChild>
-          <Link
-            to={`/browse/$category`}
-            params={{
-              category: _id,
-            }}
-            className={cn("px-3 py-1 whitespace-nowrap font-medium")}
-          >
-            {name}
-          </Link>
-        </SheetClose>
-      ))}
-    </div>
-  );
-};

@@ -345,6 +345,27 @@ export const getCitiesResponseSchema = z.array(
   })
 );
 
+export const getProductsByStoreSlugResponseSchema = z.array(
+  z.object({
+    _id: z.string(),
+    name: z.string(),
+    additionalInformation: z.string(),
+    price: z.number(),
+    images: z.array(z.string()),
+    imageUrls: z.array(z.string()),
+    storeId: z.string(),
+    categoryId: z.string(),
+    collections: z.array(
+      z.object({
+        _id: z.string(),
+        name: z.string(),
+        slug: z.string(),
+        storeId: z.string(),
+      })
+    ),
+  })
+);
+
 export const getImageUrlResponseSchema = z.string();
 
 export const generateUploadUrlResponseSchema = z.string();
@@ -397,4 +418,7 @@ export type GetContentsByStoreSlugResponse = z.infer<
 export type GetImageUrlResponse = z.infer<typeof getImageUrlResponseSchema>;
 export type GenerateUploadUrlResponse = z.infer<
   typeof generateUploadUrlResponseSchema
+>;
+export type GetProductsByStoreSlugResponse = z.infer<
+  typeof getProductsByStoreSlugResponseSchema
 >;
