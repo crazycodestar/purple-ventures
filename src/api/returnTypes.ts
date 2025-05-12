@@ -349,7 +349,7 @@ export const getProductsByStoreSlugResponseSchema = z.array(
   z.object({
     _id: z.string(),
     name: z.string(),
-    additionalInformation: z.string(),
+    additionalInformation: z.string().optional(),
     price: z.number(),
     images: z.array(z.string()),
     imageUrls: z.array(z.string()),

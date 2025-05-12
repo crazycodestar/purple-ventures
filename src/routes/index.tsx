@@ -5,7 +5,7 @@ import {
 } from "@/api/returnTypes";
 import { EditorLoading } from "@/components/editor/editor-loading";
 import { useStoreSlug } from "@/hooks/use-store-slug";
-import { cn } from "@/lib/utils";
+import { cn, formatCurrency } from "@/lib/utils";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import React, { useEffect, useState } from "react";
 
@@ -211,7 +211,9 @@ const MyProducts = () => {
             <p className="text-sm font-light uppercase tracking-wider">
               {product.name}
             </p>
-            <p className="font-extralight text-sm">${product.price}</p>
+            <p className="font-extralight text-sm">
+              {formatCurrency(product.price)}
+            </p>
           </div>
         </Link>
       ))}
