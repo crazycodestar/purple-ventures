@@ -10,6 +10,7 @@ import {
   CarouselItem,
 } from "@/components/ui/carousel";
 import { collectionsAPI } from "@/api";
+import type { GetProductsByCollectionSlugAndStoreSlugResponse } from "@/api/returnTypes";
 
 export interface Gallery4Item {
   id: string;
@@ -32,7 +33,8 @@ const ProductCarousel = ({
   collectionSlug,
   storeSlug,
 }: Gallery4Props) => {
-  const [results, setResults] = useState<any[]>([]);
+  const [results, setResults] =
+    useState<GetProductsByCollectionSlugAndStoreSlugResponse>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
