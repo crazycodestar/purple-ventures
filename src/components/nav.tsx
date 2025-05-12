@@ -50,19 +50,17 @@ export function Nav() {
           {/* Navigation Icons */}
           <div className="flex items-center gap-4 relative ml-4">
             <Link
-              className="flex gap-1 bg-muted rounded-full sm:py-1 sm:px-3 items-center text-sm"
+              className="flex gap-1 sm:py-1 sm:px-3 items-center text-sm"
               to="/order"
               aria-label="Order Lookup"
             >
-              <Package className="size-5 sm:size-4 text-foreground" />
-              <span className="hidden sm:inline text-foreground">
-                Track Order
-              </span>
+              <Package className="size-5 sm:size-4" />
+              <span className="hidden sm:inline">Track Order</span>
             </Link>
             <Link to="/cart" aria-label="Shopping Bag">
               <ShoppingBag className="h-5 w-5" />
               {items.length === 0 ? null : (
-                <div className="absolute top-0 right-0 translate-x-1/3 -translate-y-1/3 flex justify-center items-center text-xs size-4 rounded-full bg-primary text-primary-foreground">
+                <div className="absolute top-0 right-0 translate-x-1/3 -translate-y-1/3 flex justify-center items-center text-xs size-4  bg-primary text-primary-foreground rounded-full">
                   {items.length}
                 </div>
               )}

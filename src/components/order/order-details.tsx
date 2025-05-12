@@ -71,10 +71,7 @@ export function OrderDetails({ order }: OrderDetailsProps) {
             <h3 className="font-normal mb-2">Order Items</h3>
             <div className="space-y-4">
               {order.items.map((item, index) => (
-                <div
-                  key={index}
-                  className="border border-border rounded-md p-3"
-                >
+                <div key={index} className="border border-border  p-3">
                   <div className="flex justify-between mb-2">
                     <div className="font-normal">{item.name}</div>
                     <div className="font-normal">

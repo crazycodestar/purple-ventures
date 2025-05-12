@@ -101,12 +101,12 @@ const ProductCarousel = ({
             <CarouselContent>
               {Array.from({ length: 20 }).map((_, index) => (
                 <CarouselItem key={index} className="max-w-[210px]">
-                  <a href="#" className="rounded-xl">
+                  <a href="#" className="">
                     <div className="h-full max-w-full flex flex-col gap-2">
                       <div className="w-full aspect-[3/4] object-cover object-center bg-muted" />
                       <div className="flex flex-col gap-1">
-                        <div className="h-4 w-[70px] rounded-xs bg-muted" />
-                        <div className="h-4 w-[140px] rounded-xs bg-muted" />
+                        <div className="h-4 w-[70px]  bg-muted" />
+                        <div className="h-4 w-[140px]  bg-muted" />
                       </div>
                     </div>
                   </a>
@@ -120,18 +120,18 @@ const ProductCarousel = ({
               {results.map((product, index) => (
                 <CarouselItem key={index} className="max-w-[210px]">
                   {!product && (
-                    <a href="#" className="rounded-xl">
+                    <a href="#" className="">
                       <div className="h-full max-w-full flex flex-col gap-2">
                         <div className="w-full aspect-[3/4] object-cover object-center bg-muted" />
                         <div className="flex flex-col gap-1">
-                          <div className="h-4 w-[70px] rounded-xs bg-muted" />
-                          <div className="h-4 w-[140px] rounded-xs bg-muted" />
+                          <div className="h-4 w-[70px]  bg-muted" />
+                          <div className="h-4 w-[140px]  bg-muted" />
                         </div>
                       </div>
                     </a>
                   )}
                   {product && (
-                    <a href={`/prd/${product._id}`} className="rounded-xl">
+                    <a href={`/prd/${product._id}`} className="">
                       <div className="h-full max-w-full flex flex-col gap-2">
                         <img
                           src={product.mainImage ?? "/placeholder.svg"}

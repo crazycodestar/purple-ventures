@@ -260,7 +260,7 @@ function RouteComponent() {
           {/* Main Checkout Content */}
           <div className="lg:w-2/3">
             {/* Delivery Address */}
-            <div className="bg-white border rounded-md p-6 mb-6">
+            <div className="bg-white border  p-6 mb-6">
               <h2 className="text-lg font-normal">Delivery Address</h2>
               <p className="text-sm mb-6">
                 Your order total includes product cost and shipping costs.
@@ -467,7 +467,7 @@ function RouteComponent() {
                       Phone Number <span className="text-red-500">*</span>
                     </label>
                     <div className="flex">
-                      <div className="border rounded-l p-2 bg-gray-50 flex items-center">
+                      <div className="border  p-2 bg-gray-50 flex items-center">
                         <span className="text-sm">(+234)</span>
                       </div>
                       <input
@@ -481,7 +481,7 @@ function RouteComponent() {
                         })}
                         type="tel"
                         id="phone"
-                        className="w-full border border-l-0 rounded-r p-2"
+                        className="w-full border border-l-0  p-2"
                         placeholder="802 123 4567"
                       />
                     </div>
@@ -505,7 +505,7 @@ function RouteComponent() {
                       }
                     >
                       {selectedRate ? (
-                        <div className="border rounded-lg p-4 hover:bg-gray-50">
+                        <div className="border  p-4 hover:bg-gray-50">
                           <div className="flex items-center justify-between mb-2">
                             <div className="flex items-center gap-2">
                               {selectedRate.carrier_logo && (
@@ -550,14 +550,14 @@ function RouteComponent() {
                           onClick={
                             canGetShipmentRates ? getShipmentRates : undefined
                           }
-                          className={`border-2 border-dashed rounded-lg p-6 flex flex-col items-center justify-center gap-4 text-center
+                          className={`border-2 border-dashed  p-6 flex flex-col items-center justify-center gap-4 text-center
                                 ${
                                   canGetShipmentRates
                                     ? "hover:border-blue-500 cursor-pointer"
                                     : "opacity-50 cursor-not-allowed"
                                 }`}
                         >
-                          <div className="bg-blue-100 p-4 rounded-md">
+                          <div className="bg-blue-100 p-4 ">
                             <TruckIcon className="h-4 w-4 text-blue-600" />
                           </div>
                           <div>
@@ -591,7 +591,7 @@ function RouteComponent() {
                         {shipmentRates.map((rate, index) => (
                           <div
                             key={index}
-                            className="flex flex-col p-4 border rounded-lg hover:bg-gray-50 cursor-pointer"
+                            className="flex flex-col p-4 border  hover:bg-gray-50 cursor-pointer"
                             onClick={() => handleSelectRate(rate)}
                           >
                             <div className="flex items-center justify-between mb-2">
@@ -659,7 +659,7 @@ function RouteComponent() {
 
           {/* Order Summary */}
           <div className="lg:w-1/3">
-            <div className="bg-white border rounded-md mb-6 lg:sticky lg:top-4">
+            <div className="bg-white border  mb-6 lg:sticky lg:top-4">
               <div className="p-4 bg-gray-100 border-b">
                 <h2 className="text-lg font-normal">Cart Overview</h2>
               </div>
@@ -694,7 +694,7 @@ function RouteComponent() {
                   </>
                 )}
                 {isEmpty && (
-                  <div className="w-full h-48 border rounded-md flex justify-center items-center">
+                  <div className="w-full h-48 border  flex justify-center items-center">
                     Cart is Empty
                   </div>
                 )}

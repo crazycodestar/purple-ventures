@@ -74,7 +74,7 @@ export function OrderLookup({
       </form>
 
       {!isLoading && order === null && (
-        <div className="bg-destructive/10 text-destructive p-4 rounded-md">
+        <div className="bg-destructive/10 text-destructive p-4 ">
           Order not found. Please ensure you entered in the order number
           correctly.
         </div>

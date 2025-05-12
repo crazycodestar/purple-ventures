@@ -34,7 +34,7 @@ export const EditorLoading = () => {
 
       {/* Promo Banner */}
       <div className="container mx-auto mt-8 px-4">
-        <Skeleton className="h-24 w-full rounded-md" />
+        <Skeleton className="h-24 w-full " />
       </div>
 
       {/* Featured Section */}
@@ -101,7 +101,7 @@ export const EditorLoading = () => {
         <div className="grid grid-cols-3 gap-4 md:grid-cols-6">
           {Array.from({ length: 6 }).map((_, i) => (
             <div key={i} className="flex flex-col items-center space-y-2">
-              <Skeleton className="h-16 w-16 rounded-full" />
+              <Skeleton className="h-16 w-16 " />
               <Skeleton className="h-4 w-16" />
             </div>
           ))}
@@ -136,7 +136,7 @@ export const EditorLoading = () => {
           </div>
           <div className="mt-8 flex justify-center space-x-4">
             {Array.from({ length: 5 }).map((_, i) => (
-              <Skeleton key={i} className="h-8 w-8 rounded-full" />
+              <Skeleton key={i} className="h-8 w-8 " />
             ))}
           </div>
         </div>

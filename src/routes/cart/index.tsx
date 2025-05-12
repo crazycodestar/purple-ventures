@@ -37,13 +37,13 @@ function RouteComponent() {
             {isPending && (
               <>
                 {Array.from({ length: 3 }).map((_, index) => (
-                  <Skeleton key={index} className="rounded-md p-4 mb-6 h-48" />
+                  <Skeleton key={index} className=" p-4 mb-6 h-48" />
                 ))}
               </>
             )}
             {!isEmpty ? null : (
-              <div className="border rounded-md flex flex-col justify-center items-center h-48">
-                {/* <div className="px-4 py-3 rounded-sm bg-muted text-muted-foreground">
+              <div className="border  flex flex-col justify-center items-center h-48">
+                {/* <div className="px-4 py-3  bg-muted text-muted-foreground">
                   <Empty
                 </div> */}
                 <span>No Products in Cart</span>
@@ -55,10 +55,7 @@ function RouteComponent() {
             {formattedProducts?.map(
               (item, index) =>
                 item && (
-                  <div
-                    key={index}
-                    className="border bg-white rounded-md p-4 mb-6"
-                  >
+                  <div key={index} className="border bg-white  p-4 mb-6">
                     <div className="flex flex-col md:flex-row">
                       {/* Product Image */}
                       <div className="md:w-1/4 mb-4 md:mb-0">
@@ -111,7 +108,7 @@ function RouteComponent() {
                             <div className="flex items-center gap-1">
                               <Button
                                 onClick={() => decrementQuantity(index)}
-                                className="rounded-full"
+                                className=""
                                 size="icon"
                                 variant="ghost"
                               >
@@ -122,7 +119,7 @@ function RouteComponent() {
                               </span>
                               <Button
                                 onClick={() => incrementQuantity(index)}
-                                className="rounded-full"
+                                className=""
                                 size="icon"
                                 variant="ghost"
                               >
@@ -148,7 +145,7 @@ function RouteComponent() {
 
           {/* Order Summary */}
           <div className="lg:w-1/3">
-            <div className="bg-white border rounded-md p-4 mb-6 sticky top-4">
+            <div className="bg-white border  p-4 mb-6 sticky top-4">
               <h2 className="text-lg font-normal mb-4">Order summary</h2>
 
               <div className="flex items-start mb-4">

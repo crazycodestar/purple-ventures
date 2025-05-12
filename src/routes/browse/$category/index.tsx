@@ -118,7 +118,7 @@ function RouteComponent() {
 
               {/* Mobile Filter Button */}
               <div className="md:hidden">
-                <button className="w-full flex items-center justify-center gap-2 border rounded-full py-2 px-4">
+                <button className="w-full flex items-center justify-center gap-2 border  py-2 px-4">
                   <Filter className="h-4 w-4" />
                   <span>Filter & Sort</span>
                 </button>
@@ -138,8 +138,8 @@ function RouteComponent() {
                     >
                       <Skeleton className="w-full aspect-[3/4]" />
                       <div className="flex flex-col gap-1">
-                        <Skeleton className="h-4 w-[70px] rounded-xs" />
-                        <Skeleton className="h-4 w-[140px] rounded-xs" />
+                        <Skeleton className="h-4 w-[70px] " />
+                        <Skeleton className="h-4 w-[140px] " />
                       </div>
                     </div>
                   ))}
@@ -151,7 +151,7 @@ function RouteComponent() {
                     <a
                       key={product._id}
                       href={`/prd/${product._id}`}
-                      className="rounded-xl"
+                      className=""
                     >
                       <div className="h-full max-w-full flex flex-col gap-2">
                         <img

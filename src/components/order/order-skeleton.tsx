@@ -20,7 +20,7 @@ export function OrderSkeleton() {
               <div className="relative flex justify-between">
                 {[1, 2, 3, 4].map((step) => (
                   <div key={step} className="flex flex-col items-center">
-                    <Skeleton className="h-10 w-10 rounded-full" />
+                    <Skeleton className="h-10 w-10 " />
                     <Skeleton className="mt-2 h-4 w-16" />
                   </div>
                 ))}
@@ -53,7 +53,7 @@ export function OrderSkeleton() {
             <Skeleton className="h-6 w-48 mb-2" />
             <div className="space-y-4">
               {[1, 2].map((item) => (
-                <div key={item} className="border border-border rounded-md p-3">
+                <div key={item} className="border border-border  p-3">
                   <div className="flex justify-between mb-2">
                     <Skeleton className="h-5 w-40" />
                     <Skeleton className="h-5 w-20" />

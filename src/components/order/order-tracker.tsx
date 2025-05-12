@@ -39,7 +39,7 @@ export function OrderTracker({ status }: OrderTrackerProps) {
           {steps.map((step) => (
             <div key={step.id} className="flex flex-col items-center">
               <div
-                className={`flex h-10 w-10 items-center justify-center rounded-full border-2 ${
+                className={`flex h-10 w-10 items-center justify-center  border-2 ${
                   step.completed
                     ? "border-primary bg-primary text-primary-foreground"
                     : "border-muted bg-background"

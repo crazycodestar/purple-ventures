@@ -103,7 +103,7 @@ function RouteComponent() {
   }, [storeSlug, collectionSlug, filterByPropertyId]);
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="container mx-4 md:mx-auto min-h-screen bg-white">
       <div className="md:mx-8 py-4">
         {/* Page Title */}
         <div className="mb-4">
@@ -117,7 +117,7 @@ function RouteComponent() {
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Filters */}
           <div className="lg:w-64">
-            <div className="sticky top-4">
+            <div className="sticky top-28">
               <div className="flex items-center gap-2 mb-4">
                 <Filter className="h-4 w-4" />
                 <h2 className="text-sm font-normal">Filters</h2>
@@ -141,8 +141,8 @@ function RouteComponent() {
                     >
                       <Skeleton className="w-full aspect-[3/4]" />
                       <div className="flex flex-col gap-1">
-                        <Skeleton className="h-4 w-[70px] rounded-xs" />
-                        <Skeleton className="h-4 w-[140px] rounded-xs" />
+                        <Skeleton className="h-4 w-[70px] " />
+                        <Skeleton className="h-4 w-[140px] " />
                       </div>
                     </div>
                   ))
@@ -153,7 +153,7 @@ function RouteComponent() {
                       params={{
                         slug: product._id,
                       }}
-                      className="rounded-xl h-full max-w-full flex flex-col gap-2"
+                      className=" h-full max-w-full flex flex-col gap-2"
                     >
                       <div className="aspect-[3/4] bg-gray-100 relative">
                         <img

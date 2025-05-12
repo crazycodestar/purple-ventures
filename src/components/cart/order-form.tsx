@@ -110,16 +110,16 @@ export const QuantityField = ({ unit }: { unit: string }) => {
       render={({ field }) => (
         <FormItem>
           <FormLabel>Quantity</FormLabel>
-          <div className="flex rounded-lg shadow-sm shadow-black/5">
+          <div className="flex  shadow-sm shadow-black/5">
             <Input
               id="input-18"
-              className="-me-px shadow-none focus-visible:z-10 rounded-r-none"
+              className="-me-px shadow-none focus-visible:z-10 -none"
               placeholder="Quantity"
               type="number"
               disabled={isPending}
               {...field}
             />
-            <div className="h-9 rounded-r-md border px-3 flex items-center justify-center">
+            <div className="h-9  border px-3 flex items-center justify-center">
               {unit}
             </div>
           </div>

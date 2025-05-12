@@ -108,7 +108,7 @@ export function ImageUploader<T extends FieldValues>({
         {!preview ? (
           <div
             {...getRootProps()}
-            className={`border-2 border-dashed rounded-lg p-6 transition-colors ${
+            className={`border-2 border-dashed  p-6 transition-colors ${
               isDragActive
                 ? "border-primary bg-primary/5"
                 : "border-muted-foreground/25 hover:border-primary/50"
@@ -128,7 +128,7 @@ export function ImageUploader<T extends FieldValues>({
             </div>
           </div>
         ) : (
-          <div className="relative rounded-lg overflow-hidden border border-border">
+          <div className="relative  overflow-hidden border border-border">
             <img
               src={preview || "/placeholder.svg"}
               alt="Preview"
@@ -137,7 +137,7 @@ export function ImageUploader<T extends FieldValues>({
             <Button
               type="button"
               size="icon"
-              className="absolute top-2 right-2 rounded-full"
+              className="absolute top-2 right-2 "
               onClick={handleClear}
               disabled={isUploading}
             >
