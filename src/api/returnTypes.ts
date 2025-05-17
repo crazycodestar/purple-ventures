@@ -30,6 +30,36 @@ const productVariantSchema = z.object({
   options: z.array(productVariantOptionSchema),
 });
 
+const terminalDeliveryInfoSchema = z.object({
+  deliveryType: z.literal("terminal"),
+  terminalSecretKey: z.string(),
+  firstName: z.string(),
+  lastName: z.string(),
+  email: z.string(),
+  phone: z.string(),
+  line1: z.string(),
+  line2: z.string().optional(),
+  city: z.string(),
+  state: z.string(),
+  country: z.string(),
+  zip: z.string(),
+});
+
+const customDeliveryInfoSchema = z.object({
+  deliveryType: z.literal("custom"),
+  offerings: z.array(
+    z.object({
+      name: z.string(),
+      price: z.number(),
+    })
+  ),
+});
+
+export const getDeliveryInfoResponseSchema = z.union([
+  terminalDeliveryInfoSchema,
+  customDeliveryInfoSchema,
+]);
+
 const productSchema = z.object({
   _id: idSchema,
   storeId: idSchema,
@@ -44,8 +74,10 @@ const productSchema = z.object({
   variants: z.array(productVariantSchema).optional(),
   properties: z.array(productPropertySchema),
   metadataIds: z.array(idSchema).optional(),
-  weight: z.number(),
-  packageId: idSchema,
+  terminal:z.optional(z.object({
+    weight: z.number(),
+    packageId: idSchema,
+  })),
   mainImage: z.string().optional(), // Added for API responses that include mainImage
 });
 
@@ -422,3 +454,5 @@ export type GenerateUploadUrlResponse = z.infer<
 export type GetProductsByStoreSlugResponse = z.infer<
   typeof getProductsByStoreSlugResponseSchema
 >;
+
+export type GetDeliveryInfoResponse = z.infer<typeof getDeliveryInfoResponseSchema>;

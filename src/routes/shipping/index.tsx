@@ -1,4 +1,5 @@
-import { ordersAPI, terminalAPI } from "@/api";
+import { deliveryAPI, ordersAPI, terminalAPI } from "@/api";
+import type { GetDeliveryInfoResponse } from "@/api/returnTypes";
 import {
   Dialog,
   DialogContent,
@@ -51,9 +52,14 @@ const shippingFormSchema = z.object({
   state: z.string().min(1, "State is required"),
   zip: z.string().min(1, "ZIP code is required"),
   country: z.string().min(1, "Country is required"),
-  rateId: z.string().min(1, "Please select a shipping rate"),
-  terminalAddressId: z.string().min(1, "Address ID is required"),
-  terminalParcelId: z.string().min(1, "Parcel ID is required"),
+  terminalInfo: z.optional(z.object({
+    rateId: z.string().min(1, "Please select a shipping rate"),
+    terminalAddressId: z.string().min(1, "Address ID is required"),
+    terminalParcelId: z.string().min(1, "Parcel ID is required"),
+  })),
+  customDeliveryInfo: z.optional(z.object({
+    selectedOffering: z.string().min(1, "Please select a shipping option"),
+  })),
   saveAddress: z.boolean(),
 });
 
@@ -108,6 +114,18 @@ function RouteComponent() {
   }, []);
 
   const [isOrderProcessing, startTransition] = React.useTransition();
+  const [deliveryInfo, setDeliveryInfo] = React.useState<GetDeliveryInfoResponse | null>(null);
+
+  React.useEffect(() => {
+    const fetchDeliveryInfo = async () => {
+      const { data, error } = await tryCatch(deliveryAPI.getInfo(storeSlug));
+      if (error) return toast.error("Failed to fetch delivery info");
+      setDeliveryInfo(data);
+    };
+
+    fetchDeliveryInfo();
+  }, []);
+
   async function onSubmit(values: ShippingFormSchema) {
     if (!origin || !storeSlug || !selectedRate) return;
     const callbackUrl = `${origin}/order`;
@@ -124,7 +142,6 @@ function RouteComponent() {
           line1: values.line1,
           line2: values.line2,
           phone: values.phone,
-          rateId: values.rateId,
           state: values.state,
           storeSlug,
           zip: values.zip,
@@ -134,9 +151,18 @@ function RouteComponent() {
             metadatas: p.metadatas,
             variants: p.variants,
           })),
+
+          terminalInfo: values.terminalInfo ? {
+            terminalAddressId: values.terminalInfo.terminalAddressId,
+            terminalParcelId: values.terminalInfo.terminalParcelId,
+            rateId: values.terminalInfo.rateId,
+          } : undefined,
+
+          customDeliveryInfo: values.customDeliveryInfo ? {
+            selectedOffering: values.customDeliveryInfo.selectedOffering,
+          } : undefined,
+
           shipping: selectedRate.amount,
-          terminalAddressId: values.terminalAddressId,
-          terminalParcelId: values.terminalParcelId,
         })
       );
 
@@ -167,8 +193,15 @@ function RouteComponent() {
       country: "NG",
       email: "johndoe@example.com",
       phone: "1234567890",
-      rateId: "",
       saveAddress: false,
+      terminalInfo: deliveryInfo?.deliveryType === 'terminal' ? {
+        rateId: "",
+        terminalAddressId: "",
+        terminalParcelId: ""
+      } : undefined,
+      customDeliveryInfo: deliveryInfo?.deliveryType === 'custom' ? {
+        selectedOffering: ""
+      } : undefined,
     },
   });
 
@@ -190,16 +223,18 @@ function RouteComponent() {
   React.useEffect(() => {
     if (!storeSlug) return setCanGetShipmpentRates(false);
     if (!formattedProducts.length) return setCanGetShipmpentRates(false);
+    if (deliveryInfo?.deliveryType !== 'terminal') return setCanGetShipmpentRates(false);
 
     const hasAllRequirements = Object.values(getDeliveryAddressFormat()).every(
       Boolean
     );
     setCanGetShipmpentRates(hasAllRequirements);
-  }, [storeSlug, getDeliveryAddressFormat(), formattedProducts]);
+  }, [storeSlug, getDeliveryAddressFormat(), formattedProducts, deliveryInfo]);
 
   const getShipmentRates = async () => {
     if (!storeSlug) return;
     if (!formattedProducts.length) return;
+    if (deliveryInfo?.deliveryType !== 'terminal') return;
 
     const { data, error } = await tryCatch(
       terminalAPI.getRates(
@@ -213,7 +248,7 @@ function RouteComponent() {
             name: p.name,
             description: p.additionalInformation?.slice(0, 100) ?? "",
             value: p.price,
-            weight: p.weight,
+            weight: p.terminal!.weight,
           }))
       )
     );
@@ -242,15 +277,28 @@ function RouteComponent() {
   const cities = useCities(getStateCode(watch("state")) || undefined);
 
   const selectedRate = shipmentRates.find(
-    (rate) => rate.rate_id === watch("rateId")
+    (rate) => rate.rate_id === watch("terminalInfo.rateId")
   );
 
   const [isOpen, setOpen] = React.useState(false);
   const handleSelectRate = (rate: ShipmentRate) => {
-    setValue("rateId", rate.rate_id);
-    setValue("terminalAddressId", rate.delivery_address);
-    setValue("terminalParcelId", rate.parcel);
+    setValue("terminalInfo.rateId", rate.rate_id);
+    setValue("terminalInfo.terminalAddressId", rate.delivery_address);
+    setValue("terminalInfo.terminalParcelId", rate.parcel);
     setOpen(false);
+  };
+
+  const getDeliveryPrice = () => {
+    if (selectedRate) {
+      return selectedRate.amount;
+    }
+    if (deliveryInfo?.deliveryType === 'custom') {
+      const selectedOffering = deliveryInfo.offerings.find(
+        o => o.name === watch('customDeliveryInfo.selectedOffering')
+      );
+      return selectedOffering?.price ?? 0;
+    }
+    return 0;
   };
 
   return (
@@ -497,147 +545,187 @@ function RouteComponent() {
                 </div>
 
                 <div>
-                  <Dialog open={isOpen} onOpenChange={setOpen}>
-                    <div
-                      className="w-full cursor-pointer"
-                      onClick={() =>
-                        canGetShipmentRates ? setOpen(true) : undefined
-                      }
-                    >
-                      {selectedRate ? (
-                        <div className="border  p-4 hover:bg-gray-50">
-                          <div className="flex items-center justify-between mb-2">
-                            <div className="flex items-center gap-2">
-                              {selectedRate.carrier_logo && (
-                                <img
-                                  src={selectedRate.carrier_logo}
-                                  alt={selectedRate.carrier_name}
-                                  className="h-8 w-8 object-contain"
-                                />
-                              )}
-                              <h4 className="font-normal">
-                                {selectedRate.carrier_name}
-                              </h4>
-                            </div>
-                            <div className="font-normal">
-                              {selectedRate.amount.toLocaleString("en-NG", {
-                                style: "currency",
-                                currency: selectedRate.currency,
-                              })}
-                            </div>
-                          </div>
-                          <div className="text-sm space-y-1">
-                            <p className="text-gray-600">
-                              {selectedRate.carrier_rate_description}
-                            </p>
-                            <div className="flex gap-x-4">
-                              <span className="text-gray-500">
-                                Delivery: {selectedRate.delivery_time}
-                              </span>
-                              <span className="text-gray-500">
-                                Pickup: {selectedRate.pickup_time}
-                              </span>
-                            </div>
-                            {selectedRate.metadata.recommended && (
-                              <span className="inline-block bg-green-100 text-green-800 text-xs px-2 py-1 rounded">
-                                Recommended
-                              </span>
-                            )}
-                          </div>
-                        </div>
-                      ) : (
-                        <div
-                          onClick={
-                            canGetShipmentRates ? getShipmentRates : undefined
-                          }
-                          className={`border-2 border-dashed  p-6 flex flex-col items-center justify-center gap-4 text-center
-                                ${
-                                  canGetShipmentRates
-                                    ? "hover:border-blue-500 cursor-pointer"
-                                    : "opacity-50 cursor-not-allowed"
-                                }`}
-                        >
-                          <div className="bg-blue-100 p-4 ">
-                            <TruckIcon className="h-4 w-4 text-blue-600" />
-                          </div>
-                          <div>
-                            <p className="font-normal">
-                              Choose Shipping Method
-                            </p>
-
-                            {errors.rateId && (
-                              <p className="text-red-500 text-xs mt-1">
-                                {errors.rateId.message}
-                              </p>
-                            )}
-                            <p className="text-sm text-gray-500 mt-1">
-                              {canGetShipmentRates
-                                ? "Click to view available shipping options"
-                                : "Please complete your delivery information"}
-                            </p>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-
-                    <DialogContent className="max-w-md">
-                      <DialogHeader>
-                        <DialogTitle>Select Shipping Method</DialogTitle>
-                        <DialogDescription>
-                          Choose your preferred shipping option
-                        </DialogDescription>
-                      </DialogHeader>
-                      <div className="space-y-4 max-h-[60vh] overflow-auto">
-                        {shipmentRates.map((rate, index) => (
-                          <div
-                            key={index}
-                            className="flex flex-col p-4 border  hover:bg-gray-50 cursor-pointer"
-                            onClick={() => handleSelectRate(rate)}
-                          >
+                  {deliveryInfo?.deliveryType === 'terminal' ? 
+                    <Dialog open={isOpen} onOpenChange={setOpen}>
+                      <div
+                        className="w-full cursor-pointer"
+                        onClick={() =>
+                          canGetShipmentRates ? setOpen(true) : undefined
+                        }
+                      >
+                        {selectedRate ? (
+                          <div className="border  p-4 hover:bg-gray-50">
                             <div className="flex items-center justify-between mb-2">
                               <div className="flex items-center gap-2">
-                                {rate.carrier_logo && (
+                                {selectedRate.carrier_logo && (
                                   <img
-                                    src={rate.carrier_logo}
-                                    alt={rate.carrier_name}
+                                    src={selectedRate.carrier_logo}
+                                    alt={selectedRate.carrier_name}
                                     className="h-8 w-8 object-contain"
                                   />
                                 )}
                                 <h4 className="font-normal">
-                                  {rate.carrier_name}
+                                  {selectedRate.carrier_name}
                                 </h4>
                               </div>
                               <div className="font-normal">
-                                {rate.amount.toLocaleString("en-NG", {
+                                {selectedRate.amount.toLocaleString("en-NG", {
                                   style: "currency",
-                                  currency: rate.currency,
+                                  currency: selectedRate.currency,
                                 })}
                               </div>
                             </div>
-
                             <div className="text-sm space-y-1">
                               <p className="text-gray-600">
-                                {rate.carrier_rate_description}
+                                {selectedRate.carrier_rate_description}
                               </p>
                               <div className="flex gap-x-4">
                                 <span className="text-gray-500">
-                                  Delivery: {rate.delivery_time}
+                                  Delivery: {selectedRate.delivery_time}
                                 </span>
                                 <span className="text-gray-500">
-                                  Pickup: {rate.pickup_time}
+                                  Pickup: {selectedRate.pickup_time}
                                 </span>
                               </div>
-                              {rate.metadata.recommended && (
+                              {selectedRate.metadata.recommended && (
                                 <span className="inline-block bg-green-100 text-green-800 text-xs px-2 py-1 rounded">
                                   Recommended
                                 </span>
                               )}
                             </div>
                           </div>
-                        ))}
+                        ) : (
+                          <div
+                            onClick={
+                              canGetShipmentRates ? getShipmentRates : undefined
+                            }
+                            className={`border-2 border-dashed  p-6 flex flex-col items-center justify-center gap-4 text-center
+                                  ${
+                                    canGetShipmentRates
+                                      ? "hover:border-blue-500 cursor-pointer"
+                                      : "opacity-50 cursor-not-allowed"
+                                  }`}
+                          >
+                            <div className="bg-blue-100 p-4 ">
+                              <TruckIcon className="h-4 w-4 text-blue-600" />
+                            </div>
+                            <div>
+                              <p className="font-normal">
+                                Choose Shipping Method
+                              </p>
+
+                              {errors.terminalInfo?.rateId && (
+                                <p className="text-red-500 text-xs mt-1">
+                                  {errors.terminalInfo.rateId.message}
+                                </p>
+                              )}
+                              <p className="text-sm text-gray-500 mt-1">
+                                {canGetShipmentRates
+                                  ? "Click to view available shipping options"
+                                  : "Please complete your delivery information"}
+                              </p>
+                            </div>
+                          </div>
+                        )}
                       </div>
-                    </DialogContent>
-                  </Dialog>
+
+                      <DialogContent className="max-w-md">
+                        <DialogHeader>
+                          <DialogTitle>Select Shipping Method</DialogTitle>
+                          <DialogDescription>
+                            Choose your preferred shipping option
+                          </DialogDescription>
+                        </DialogHeader>
+                        <div className="space-y-4 max-h-[60vh] overflow-auto">
+                          {shipmentRates.map((rate, index) => (
+                            <div
+                              key={index}
+                              className="flex flex-col p-4 border  hover:bg-gray-50 cursor-pointer"
+                              onClick={() => handleSelectRate(rate)}
+                            >
+                              <div className="flex items-center justify-between mb-2">
+                                <div className="flex items-center gap-2">
+                                  {rate.carrier_logo && (
+                                    <img
+                                      src={rate.carrier_logo}
+                                      alt={rate.carrier_name}
+                                      className="h-8 w-8 object-contain"
+                                    />
+                                  )}
+                                  <h4 className="font-normal">
+                                    {rate.carrier_name}
+                                  </h4>
+                                </div>
+                                <div className="font-normal">
+                                  {rate.amount.toLocaleString("en-NG", {
+                                    style: "currency",
+                                    currency: rate.currency,
+                                  })}
+                                </div>
+                              </div>
+
+                              <div className="text-sm space-y-1">
+                                <p className="text-gray-600">
+                                  {rate.carrier_rate_description}
+                                </p>
+                                <div className="flex gap-x-4">
+                                  <span className="text-gray-500">
+                                    Delivery: {rate.delivery_time}
+                                  </span>
+                                  <span className="text-gray-500">
+                                    Pickup: {rate.pickup_time}
+                                  </span>
+                                </div>
+                                {rate.metadata.recommended && (
+                                  <span className="inline-block bg-green-100 text-green-800 text-xs px-2 py-1 rounded">
+                                    Recommended
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </DialogContent>
+                    </Dialog> : 
+                    
+                      <div className="space-y-4">
+                        <h3 className="font-normal text-sm">Select Delivery Option</h3>
+                        {errors.customDeliveryInfo?.selectedOffering && (
+                          <p className="text-red-500 text-xs">
+                            {errors.customDeliveryInfo.selectedOffering.message}
+                          </p>
+                        )}
+                        
+                        <div className="space-y-2">
+                          {deliveryInfo?.offerings.map((offering) => (
+                            <label
+                              key={offering.name}
+                              className={`flex items-center justify-between p-4 border rounded cursor-pointer hover:bg-gray-50 ${
+                                watch('customDeliveryInfo.selectedOffering') === offering.name
+                                  ? 'border-blue-500 bg-blue-50'
+                                  : ''
+                              }`}
+                            >
+                              <div className="flex items-center gap-3">
+                                <input
+                                  type="radio"
+                                  value={offering.name}
+                                  {...register('customDeliveryInfo.selectedOffering')}
+                                  className="size-4"
+                                />
+                                <span>{offering.name}</span>
+                              </div>
+                              <span className="font-normal">
+                                {offering.price.toLocaleString('en-NG', {
+                                  style: 'currency',
+                                  currency: 'NGN'
+                                })}
+                              </span>
+                            </label>
+                          ))}
+                        </div>
+                      </div>
+                  }
                 </div>
                 {/* <pre>{JSON.stringify(shipmentRates, null, 2)}</pre> */}
 
@@ -780,12 +868,10 @@ function RouteComponent() {
                     <div className="flex justify-between text-sm">
                       <span>Delivery</span>
                       <span>
-                        {selectedRate
-                          ? selectedRate.amount.toLocaleString("en-NG", {
-                              currency: "NGN",
-                              style: "currency",
-                            })
-                          : "Select Delivery option"}
+                        {getDeliveryPrice().toLocaleString("en-NG", {
+                          currency: "NGN",
+                          style: "currency",
+                        })}
                       </span>
                     </div>
                   </div>
@@ -796,7 +882,7 @@ function RouteComponent() {
                       {isPending ? (
                         <Skeleton className="h-6 w-[70px]" />
                       ) : (
-                        (subTotal + (selectedRate?.amount ?? 0)).toLocaleString(
+                        (subTotal + getDeliveryPrice()).toLocaleString(
                           "en-NG",
                           {
                             currency: "NGN",
