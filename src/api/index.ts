@@ -6,6 +6,7 @@ import {
   getCitiesResponseSchema,
   getCollectionBySlugAndStoreSlugResponseSchema,
   getContentsByStoreSlugResponseSchema,
+  getDeliveryInfoResponseSchema,
   getFiltersResponseSchema,
   getImageUrlResponseSchema,
   getOrderByReferenceOrSlugResponseSchema,
@@ -162,9 +163,14 @@ type ShippingForm = {
     }>;
   }>;
   shipping: number;
-  rateId: string;
-  terminalAddressId?: string;
-  terminalParcelId?: string;
+  terminalInfo?: {
+    rateId: string;
+    terminalAddressId?: string;
+    terminalParcelId?: string;
+  };
+  customDeliveryInfo?: {
+    selectedOffering: string;
+  };
 };
 
 // Order API functions
@@ -238,4 +244,13 @@ export const contentsAPI = {
     fetchAPI(API_ENDPOINTS.contents.generateUploadUrl, {
       method: "POST",
     }).then((data) => generateUploadUrlResponseSchema.parse(data)),
+};
+
+
+// Delivery API functions
+export const deliveryAPI = {
+  getInfo: (storeSlug: string) =>
+    fetchAPI(API_ENDPOINTS.delivery.getInfo, {
+      params: { storeSlug },
+    }).then((data) => getDeliveryInfoResponseSchema.parse(data)),
 };

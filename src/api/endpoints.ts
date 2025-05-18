@@ -32,4 +32,7 @@ export const API_ENDPOINTS = {
     getImageUrl: "/api/contents/get-image-url",
     generateUploadUrl: "/api/contents/generate-upload-url",
   },
+  delivery: {
+    getInfo: "/api/delivery/info",
+  },
 } as const;
