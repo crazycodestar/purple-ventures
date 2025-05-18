@@ -6,7 +6,6 @@ import {
   getCitiesResponseSchema,
   getCollectionBySlugAndStoreSlugResponseSchema,
   getContentsByStoreSlugResponseSchema,
-  getDeliveryInfoResponseSchema,
   getFiltersResponseSchema,
   getImageUrlResponseSchema,
   getOrderByReferenceOrSlugResponseSchema,
@@ -15,10 +14,10 @@ import {
   getProductsByCollectionSlugAndStoreSlugResponseSchema,
   getProductsByIdsResponseSchema,
   getProductsByStoreSlugResponseSchema,
-  getRatesResponseSchema,
   getStatesResponseSchema,
   getSubCategoriesByParentIdAndStoreSlugResponseSchema,
   initializeOrderResponseSchema,
+  getDeliveryInfoResponseSchema,
 } from "./returnTypes";
 
 export async function fetchAPI<T>(
@@ -163,12 +162,7 @@ type ShippingForm = {
     }>;
   }>;
   shipping: number;
-  terminalInfo?: {
-    rateId: string;
-    terminalAddressId?: string;
-    terminalParcelId?: string;
-  };
-  customDeliveryInfo?: {
+  deliveryInfo?: {
     selectedOffering: string;
   };
 };
@@ -197,35 +191,7 @@ export const terminalAPI = {
   getCities: (stateCode: string) =>
     fetchAPI(API_ENDPOINTS.terminal.getCities, {
       params: { stateCode },
-    }).then((data) => getCitiesResponseSchema.parse(data)),
-
-  getRates: (
-    storeSlug: string,
-    deliveryAddress: {
-      city: string;
-      country: string;
-      state: string;
-      email: string;
-      line1: string;
-      line2?: string;
-      firstName: string;
-      lastName: string;
-      phone: string;
-      zip: string;
-    },
-    items: Array<{
-      productId: string;
-      name: string;
-      description: string;
-      value: number;
-      weight: number;
-      quantity: number;
-    }>
-  ) =>
-    fetchAPI(API_ENDPOINTS.terminal.getRates, {
-      method: "POST",
-      body: { storeSlug, deliveryAddress, items },
-    }).then((data) => getRatesResponseSchema.parse(data)),
+    }).then((data) => getCitiesResponseSchema.parse(data))
 };
 
 // Contents API functions
@@ -252,5 +218,5 @@ export const deliveryAPI = {
   getInfo: (storeSlug: string) =>
     fetchAPI(API_ENDPOINTS.delivery.getInfo, {
       params: { storeSlug },
-    }).then((data) => getDeliveryInfoResponseSchema.parse(data)),
+    }).then((data) => getDeliveryInfoResponseSchema.parse(data)), 
 };
